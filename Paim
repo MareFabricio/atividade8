@@ -1,0 +1,49 @@
+clc
+clear
+
+//Valores fornecidos
+e = 10000;
+CA0 = 0.001;
+Xi = 0;
+Xf = 0.6;
+
+//Cálculo de FA0
+FA0 = CA0*e;
+
+//Criando uma função para o termo dentro da integral
+function y=integral(X)
+
+    //Valores fornecidos
+    T1 = 300;
+    cpA = 100;
+    cpin = 300;
+    Hr = -40000;
+    k1linha = 0.01;
+    Ea = 16720;
+    R = 8.314;
+    De = 0.01;
+    dp = 1;
+    U = 10;
+    v = 0.02;
+    a = 60;
+    CA0 = 0.001;
+    
+    //Cálculo de T
+    T = T1 + (-Hr*X/(cpA + cpin));
+    
+    //Cálculo de kef
+    klinha = k1linha*exp((Ea/R)*((1/T1)-(1/T)));
+    kc = (100*De/dp)*(U*dp/v)^(1/2);
+    kclinha = kc*a;
+    kef = kclinha*klinha/(kclinha + klinha);
+    
+    //Cálculo de CA  e do termo dentro da integral (y))
+    CA = CA0*(1-X);
+    y = 1/(kef*CA);
+
+endfunction
+
+//Cálculo da massa, utilizando a função do Scilab "intg" para integrar
+massa = FA0*intg(Xi, Xf, integral);
+
+disp(massa)
